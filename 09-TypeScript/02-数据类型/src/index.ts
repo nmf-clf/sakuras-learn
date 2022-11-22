@@ -2,7 +2,7 @@
  * @Author: niumengfei
  * @Date: 2022-11-21 15:15:23
  * @LastEditors: niumengfei
- * @LastEditTime: 2022-11-21 18:41:42
+ * @LastEditTime: 2022-11-22 17:18:35
  */
 /* 事实上，TypeScript 的原始类型标注中也有 void，但与 JavaScript 中不同的是，
     这里的 void 用于描述一个内部没有 return 语句，或者没有显式 return 一个值的函数的返回值，如： */
@@ -160,4 +160,134 @@ const fee = (name: string): void =>{
 }
 const fee2: (name: string) => number = (name) =>{
     return name.length
+}
+
+// 没有调用 return 语句
+function foo22() { 
+}
+
+function funce(foo: number, bar?: true): string;
+function funce(foo: number, bar?: false): number;
+function funce(foo: number, bar?: boolean): string | number {
+  if (bar) {
+    return String(foo);
+  } else {
+    return foo * 599;
+  }
+}
+
+const res1 = funce(599); // number
+const res2 = funce(599, true); // string
+const res3 = funce(599, false); // number
+console.log('xss', res1, res2, res3);
+
+/* class类的标注 */
+class Foo {
+  prop: string;
+
+  constructor(inputProp: string) {
+    this.prop = inputProp;
+  }
+
+  print(addon: string): void {
+    console.log(`${this.prop} and ${addon}`)
+  }
+
+  get propA(): string {
+    return `${this.prop}+A`;
+  }
+
+  set propA(value: string) {
+    this.prop = `${value}+A`
+  }
+}
+
+/* 父子类 */
+class Base {
+    print() { 
+        console.log('Base-print...');
+    }
+  }
+  
+class Derived extends Base {
+    print() {
+        super.print()
+        // console.log(super);
+        // ...
+    }
+}
+let d1 = new Derived();
+d1.print()
+
+class Base2 {
+    print(){}
+    printWithLove() { }
+  }
+  
+class Derived2 extends Base2 {
+    override print() {
+        // ...
+    }
+}
+
+/* 抽象类 */
+abstract class AbsFoo {
+    //在 TypeScript 中无法声明静态的抽象成员。
+    abstract absProp?: number;
+    abstract get absGetter(): string;
+    abstract absMethod(name: string): string
+}
+
+class Foo2 implements AbsFoo {
+    absProp: number = 123
+  
+    get absGetter() {
+      return "linbudu"
+    }
+  
+    absMethod(name: string) {
+      return name
+    }
+}
+
+/* 接口 */
+class Foo5 { }
+
+interface FooStruct {
+  new(): Foo
+}
+
+declare const NewableFoo: FooStruct;
+
+const foo5 = new NewableFoo();
+console.log('foo5::', foo5);
+
+/* 扩展 */
+class Foo6 {
+    // private constructor() { } //类“Foo6”的构造函数是私有的，仅可在类声明中访问
+    getds(){
+
+    }
+}
+let foo6 = new Foo6();
+
+/* any */
+let foo67;
+
+// foo、bar 均为 any
+function func(foo: any, bar: any){}
+
+/* never */
+function justThrow(): never {
+    throw new Error()
+  }
+  
+function foo33 (input:number){
+if(input > 1){
+    if(true){
+        justThrow();
+    }
+    // 等同于 return 语句后的代码，即 Dead Code
+    const name = "linbudu";
+}
 }

@@ -5,6 +5,7 @@
       "target": "ES6",
       // "moduleResolution": "Node",
       // "strictNullChecks": true,
+      "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
   },
   "include": [
       "./src/**/*"
