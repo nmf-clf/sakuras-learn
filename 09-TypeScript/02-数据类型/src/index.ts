@@ -1,135 +1,94 @@
-type A = string;
+/*
+ * @Author: niumengfei
+ * @Date: 2022-11-23 11:45:43
+ * @LastEditors: niumengfei
+ * @LastEditTime: 2022-11-24 12:20:33
+ */
+/* 类型查询操作符：熟悉又陌生的 typeof */
+const str = "linbudu";
 
-/* 抽离一组联合类型 */
-type StatusCode = 200 | 301 | 400 | 500 | 502;
-type PossibleDataTypes = string | number | (() => unknown);
+const obj = { name: "linbudu" };
 
-const status2: StatusCode = 502;
+const nullVar = null;
+const undefinedVar = undefined;
 
-/* 抽离一个函数类型 */
-type Handler = (e: Event) => void;
-
-const clickHandler: Handler = (e) => { };
-const moveHandler: Handler = (e) => { };
-const dragHandler: Handler = (e) => { };
-
-/* 声明一个对象类型，就像接口那样 */
-type ObjectType = {
-    name: string,
+const func = (input: string) => {
+  return input.length > 10;
 }
 
-/* 工具类型 */
-type Factory<T> = T | number | string;
-// const foo: Factory<boolean> = true;
+type Str = typeof str; // "linbudu"
+type Obj = typeof obj; // { name: string; }
+type Null = typeof nullVar; // null
+type Undefined = typeof undefined; // undefined
+type Func = typeof func; // (input: string) => boolean
 
-type FactoryWithBool = Factory<boolean>;
+// const b1:Str = '123'; //不能将类型“"123"”分配给类型“"linbudu"”
 
-const foo: FactoryWithBool = 123;
+/* 你不仅可以直接在类型标注中使用 typeof，还能在工具类型中使用 typeof。 */
+const func2 = (input: string) => {
+    return input.length > 10;
+}
+  
+const _func2: typeof func2 = (name: string) => {
+    return name === 'linbudu'
+}
 
-/* 交叉类型 */
-interface NameStruct {
-    name: string;
+const func3 = (input: string) => {
+    return input.length > 10;
 }
-interface AgeStruct {
-    age: number;
+  
+  // boolean
+type FuncReturnType = ReturnType<typeof func3>;
+
+const isInputValid = (input: string) => {
+    return input.length > 10;
 }
-type ProfileStruct = NameStruct & AgeStruct;
-const profile: ProfileStruct = {
-    name: "linbudu",
-    age: 19
+  
+// 不允许表达式
+let isValid: ReturnType<typeof isInputValid> = false;
+
+/* 类型守卫 */
+declare const strOrNumOrBool: string | number | boolean;
+
+// if (typeof strOrNumOrBool === "string") {
+//   // 一定是字符串！
+//   strOrNumOrBool.charAt(1);
+// } else if (typeof strOrNumOrBool === "number") {
+//   // 一定是数字！
+//   strOrNumOrBool.toFixed();
+// } else if (typeof strOrNumOrBool === "boolean") {
+//   // 一定是布尔值！
+//   strOrNumOrBool === true;
+// } else {
+//   // 要是走到这里就说明有问题！
+//   const _exhaustiveCheck: never = strOrNumOrBool;
+//   throw new Error(`Unknown input type: ${_exhaustiveCheck}`);
+// }
+
+function isString(input: unknown): input is string {
+    return typeof input === "string";
 }
-type Struct1 = {
-    primitiveProp?: string;
-    objectProp: {
-      name: string;
+
+function foo(input: string | number) {
+    if (isString(input)) {
+        // 类型“string | number”上不存在属性“replace”。
+        (input).replace("linbudu", "linbudu599")
     }
-  }
-type Struct2 = {
-    primitiveProp?: number;
-    objectProp: {
-        age: number;
-    }
+    if (typeof input === 'number') { }
+    // ...
 }
 
-type Composed = Struct1 & Struct2;
+ type Falsy = false | "" | 0 | null | undefined | [];
 
-const a:Composed = {
-    // primitiveProp: '13',
-    objectProp: {
-      name: '1233',
-      age: 15
-    }
-}
-// type PrimitivePropType = Composed['primitiveProp']; // never
-// type ObjectPropType = Composed['objectProp']; // { name: string; age: number; }
-
-interface AllStringTypes {
-    [key: string]: string;
-  }
-  
-type PropType1 = AllStringTypes['linbudu']; // string
-type PropType2 = AllStringTypes['599']; // string
-
-const dasd:PropType1 = 'dsdasd'
-console.log('dasd:::', dasd);
-
-  
-const fooee: AllStringTypes = {
-    "linbudu": "599",
-    599: "linbudu",
-    [Symbol("ddd")]: 'symbol',
+ const isFalsy = (val: unknown): val is Falsy => !val;
+console.log('isFalsy::', isFalsy([]));
+if(isFalsy([])){
+    console.log('true1');
+}else{
+    console.log('false1');
 }
 
-interface AllStringTypes2 {
-    // 类型“number”的属性“propA”不能赋给“string”索引类型“boolean”。
-    propA: number;
-    [key: string]: boolean | number;
-}
+// 不包括不常用的 symbol 和 bigint
+export type Primitive = string | number | boolean | undefined;
 
-interface AnyTypeHere {
-    [key: number]: string;
-}
-  
-const foosd: AnyTypeHere[212] = 'any value';
-
-/* 索引类型查询 */
-interface Foo {
-    linbudu: 1,
-    599: 2
-}
-  
-type FooKeys = keyof Foo; // "linbudu" | 599
-const rt:FooKeys = 'linbudu'
-
-// type FooKeys = Object.keys(Foo4).join(" | ");
-interface Foo {
-    propA: number;
-    propB: boolean;
-    propC: string;
-    propD: string[];
-}
-type PropTypeUnion = Foo[keyof Foo]; // string | number | boolean
-const rrr:PropTypeUnion = ['12','23'];
-
-interface Foo {
-    propA: number;
-}
-// 类型“Foo”没有匹配的类型“string”的索引签名。
-type PropAType = AllStringTypes2[number]; 
-
-/* 映射类型 */
-type Stringify<T> = {
-    [K in keyof T]: T[K];
-};
-
-interface Fooys {
-    prop1: string;
-    prop2: number;
-    prop3?: boolean;
-    prop4?: () => void;
-}
-type ysType = Stringify<Fooys>;
-const yss: ysType = {
-    prop1: 's21',
-    prop2: 23,
-};
+export const isPrimitive = (val: unknown): val is Primitive => ['string', 'number', 'boolean' , 'undefined'].includes(typeof val);
