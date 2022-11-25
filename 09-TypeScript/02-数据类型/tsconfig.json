@@ -3,12 +3,12 @@
       "outDir": "./built",
       "allowJs": true,
       "target": "ES6",
-      // "moduleResolution": "Node",
+      "moduleResolution": "Node",
       "strictNullChecks": true,
       "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
   },
   "include": [
       // "./src/**/*"
-      "./src/index.ts"
+      "src/index.ts"
   ]
 }

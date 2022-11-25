@@ -1,94 +1,54 @@
 /*
  * @Author: niumengfei
- * @Date: 2022-11-23 11:45:43
+ * @Date: 2022-11-25 21:38:24
  * @LastEditors: niumengfei
- * @LastEditTime: 2022-11-24 12:20:33
+ * @LastEditTime: 2022-11-25 21:54:09
  */
-/* 类型查询操作符：熟悉又陌生的 typeof */
-const str = "linbudu";
+/* 泛型 */
 
-const obj = { name: "linbudu" };
-
-const nullVar = null;
-const undefinedVar = undefined;
-
-const func = (input: string) => {
-  return input.length > 10;
-}
-
-type Str = typeof str; // "linbudu"
-type Obj = typeof obj; // { name: string; }
-type Null = typeof nullVar; // null
-type Undefined = typeof undefined; // undefined
-type Func = typeof func; // (input: string) => boolean
-
-// const b1:Str = '123'; //不能将类型“"123"”分配给类型“"linbudu"”
-
-/* 你不仅可以直接在类型标注中使用 typeof，还能在工具类型中使用 typeof。 */
-const func2 = (input: string) => {
-    return input.length > 10;
-}
-  
-const _func2: typeof func2 = (name: string) => {
-    return name === 'linbudu'
-}
-
-const func3 = (input: string) => {
-    return input.length > 10;
-}
-  
-  // boolean
-type FuncReturnType = ReturnType<typeof func3>;
-
-const isInputValid = (input: string) => {
-    return input.length > 10;
-}
-  
-// 不允许表达式
-let isValid: ReturnType<typeof isInputValid> = false;
-
-/* 类型守卫 */
-declare const strOrNumOrBool: string | number | boolean;
-
-// if (typeof strOrNumOrBool === "string") {
-//   // 一定是字符串！
-//   strOrNumOrBool.charAt(1);
-// } else if (typeof strOrNumOrBool === "number") {
-//   // 一定是数字！
-//   strOrNumOrBool.toFixed();
-// } else if (typeof strOrNumOrBool === "boolean") {
-//   // 一定是布尔值！
-//   strOrNumOrBool === true;
-// } else {
-//   // 要是走到这里就说明有问题！
-//   const _exhaustiveCheck: never = strOrNumOrBool;
-//   throw new Error(`Unknown input type: ${_exhaustiveCheck}`);
+/* 类型别名中的泛型 */
+type Factory<T> = T | number;
+//上面这个类型别名的本质就是一个函数，T 就是它的变量，返回值则是一个包含 T 的联合类型，我们可以写段伪代码来加深一下记忆：
+// function Factory(typeArg){
+//     return [typeArg, number, string]
 // }
 
-function isString(input: unknown): input is string {
-    return typeof input === "string";
+type Stringify<T> = {
+    [K in keyof T]?: T[K]; //string;
+};
+  
+type Clone<T> = {
+    [K in keyof T]: T[K];
 }
 
-function foo(input: string | number) {
-    if (isString(input)) {
-        // 类型“string | number”上不存在属性“replace”。
-        (input).replace("linbudu", "linbudu599")
-    }
-    if (typeof input === 'number') { }
-    // ...
+type _Stringify = Stringify<{
+    name: string,
+    age: number,
+    // sad: string
+}>;
+
+let a: _Stringify ={
+    name: '123',
+    // age: 19
+    // sad: '123'
 }
 
- type Falsy = false | "" | 0 | null | undefined | [];
-
- const isFalsy = (val: unknown): val is Falsy => !val;
-console.log('isFalsy::', isFalsy([]));
-if(isFalsy([])){
-    console.log('true1');
-}else{
-    console.log('false1');
-}
-
-// 不包括不常用的 symbol 和 bigint
-export type Primitive = string | number | boolean | undefined;
-
-export const isPrimitive = (val: unknown): val is Primitive => ['string', 'number', 'boolean' , 'undefined'].includes(typeof val);
+type Partial2<T> = {
+    [P in keyof T]?: T[P];
+};
+interface IFoo {
+    prop1: string;
+    prop2: number;
+    prop3: boolean;
+    prop4: () => void;
+  }
+  
+  type PartialIFoo = Partial2<IFoo>;
+  
+  // 等价于
+  interface PartialIFoo2 {
+    prop1?: string;
+    prop2?: number;
+    prop3?: boolean;
+    prop4?: () => void;
+  }
