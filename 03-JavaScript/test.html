@@ -2,7 +2,7 @@
  * @Author: niumengfei
  * @Date: 2022-11-28 16:27:35
  * @LastEditors: niumengfei
- * @LastEditTime: 2022-11-28 16:27:46
+ * @LastEditTime: 2022-11-30 15:16:50
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -11,8 +11,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            background-color: aquamarine;
+        }
+    </style>
 </head>
 <body>
-    
+    <div onclick="_click1()">
+        <div onclick="_click2()">
+          <button onclick="_click3()">
+            Click!
+          </button>
+        </div>
+      </div>
 </body>
+<script type="module">
+let obj = {
+  a: '1',
+  b: '2'
+}
+console.log(Object.assign({a:'3'}, obj,{ a: '2' }));
+
+</script>
 </html>
