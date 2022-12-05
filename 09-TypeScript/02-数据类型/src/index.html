@@ -2,7 +2,7 @@
  * @Author: niumengfei
  * @Date: 2022-11-21 15:10:45
  * @LastEditors: niumengfei
- * @LastEditTime: 2022-12-04 14:38:42
+ * @LastEditTime: 2022-12-05 16:25:37
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -16,43 +16,54 @@
             margin: 0;
             padding: 0;
         }
-        .main{
+        .top {
+            position: relative; /**关键：给父元素设置相对定位，方便子元素以此绝对定位 d*/
+        }
+        .top img {
             width: 100%;
-            height: calc(100vh - 45px);
+        }
+        .userinfo {
+            position: absolute; /** 关键：子元素设置绝对定位，相对于上边父元素的位置移动 */
+            left: 0; /* 关键：实现水平居中  */
+            right: 0;  /* 关键：实现水平居中  */
+            bottom: 30px;
             display: flex;
             flex-direction: column;
-            position: fixed;
+            align-items: center;
         }
-        .header{
-            height: 45px;
-            width: 100%;
-            background: rgb(217, 71, 71);
+        .login-btn{
+            position: absolute; /**关键*/
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 18px;
+            letter-spacing: 3px;
         }
-        .box2{
-            flex: 1;
-            background: yellowgreen;
+        #avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
         }
-        .box3{
-            width: 100%;
-            height: 100px;
-            line-height: 100px;
-            background: paleturquoise;
+        #username {
+            font-size: 20px;
+            color: red;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="header">头部</div>
-    <div class="main">
-        <div class="box1">111</div>
-        <div class="box2">22</div>
-        <div class="box3">33</div>
+    <div class="top">
+        <img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/4/16b219d1a4847981~tplv-t2oaga2asx-zoom-crop-mark:3024:3024:3024:1702.awebp">
+        <div class="login-btn">微信一键登录</div>
+        <div class="userinfo">
+            <img id="avatar" src="https://p3-passport.byteimg.com/img/user-avatar/c340fb8f7ea3298542ee573c9da9136e~100x100.awebp">
+            <span id="username">大熊</span>
+        </div>
     </div>
 </body>
-<!-- <script type="module">
-    let arr = [1, 2, 3]
-    let b = arr;
-    b[0] = '555'
-    console.log(b);
-</script> -->
-<script src="../built//index.js"></script>
 </html>
