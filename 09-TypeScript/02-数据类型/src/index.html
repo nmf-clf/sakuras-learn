@@ -2,7 +2,7 @@
  * @Author: niumengfei
  * @Date: 2022-11-21 15:10:45
  * @LastEditors: niumengfei
- * @LastEditTime: 2022-12-05 16:25:37
+ * @LastEditTime: 2022-12-07 11:44:24
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -66,4 +66,15 @@
         </div>
     </div>
 </body>
+<script>
+    function data(){
+        return {
+            key: '123',
+            to: function(){
+                console.log(this);
+            }
+        }
+    }
+    data().to()
+</script>
 </html>
