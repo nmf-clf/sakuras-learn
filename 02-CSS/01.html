@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 300px;
+            height: auto;
+            border: 1px solid red;
+            overflow-y: scroll;
+        }
+        .box1-1{
+            width: 200px;
+            height: 50px;
+        }
+        .box1-2{
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="box" onclick="c()">
+        <div class="box1-1">表头</div>
+        <div class="box1-2">表格</div>
+        <div class="box1-3">333</div>
+    </div>
+</body>
+<script>
+    function c(e) {
+        e?.preventDefault();
+        console.log('sss');
+    }
+    // function c1() {
+    //     console.log('11');
+    // }
+</script>
+</html>

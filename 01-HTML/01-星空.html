@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Stars Background</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: black;
+      }
+
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        border-radius: 50%;
+        box-shadow: 0 0 2px white;
+        animation: blink 3s infinite;
+      }
+
+      .star--small {
+        animation-duration: 2s;
+      }
+
+      .star--medium {
+        animation-duration: 3s;
+      }
+
+      .star--large {
+        animation-duration: 4s;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars"></div>
+    <script>
+      // 获取星空背景元素
+      const starsElement = document.querySelector(".stars");
+
+      // 生成随机位置和大小的星星
+      function createStar() {
+        const starElement = document.createElement("div");
+        starElement.classList.add("star");
+        starElement.classList.add(getRandomSize());
+        starElement.style.left = `${Math.random() * 100}%`;
+        starElement.style.top = `${Math.random() * 100}%`;
+        starsElement.appendChild(starElement);
+      }
+
+      // 生成随机大小的星星类名
+      function getRandomSize() {
+        const sizes = ["star--small", "star--medium", "star--large"];
+        return sizes[Math.floor(Math.random() * sizes.length)];
+      }
+
+      // 生成多个星星
+      for (let i = 0; i < 100; i++) {
+        createStar();
+      }
+    </script>
+  </body>
+</html>
