@@ -15,7 +15,7 @@
   \**********************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("console.log(\"index.js....\");\r\nconst test = __webpack_require__(/*! ./test */ \"./src/test.js\");\r\nconsole.log(\"自定义打包工具：\" + test);\r\nmodule.exports = \"123\";\r\n\n\n//# sourceURL=webpack://01-easy/./src/index.js?");
+eval("console.log(\"index.js....\");\r\nconst test = __webpack_require__(/*! ./test */ \"./src/test.js\");\r\n__webpack_require__(Object(function webpackMissingModule() { var e = new Error(\"Cannot find module './index.less'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));\r\nconsole.log(\"自定义打包工具：\" + test);\r\nmodule.exports = \"123\";\r\n\n\n//# sourceURL=webpack://01-easy/./src/index.js?");
 
 /***/ }),
 
