@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box1 {
+            width: 100px;
+            height: 200px;
+            background: red;
+        }
+
+        .box2 {
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box1">
+        <div class="box2">
+
+        </div>
+    </div>
+</body>
+<script>
+    const box1 = document.querySelector('.box1');
+    const box2 = document.querySelector('.box2');
+
+    box1.addEventListener('click', function (e) {
+        console.log('Box 1 clicked red');
+        // 在这里可以编写你想要执行的其他操作
+    });
+    box2.addEventListener('click', function (e) {
+        e.stopPropagation();
+        console.log('Box 2 clicked yellow');
+        // 在这里可以编写你想要执行的其他操作
+    });
+
+    function extractPath(input) {
+        const regex = /^https?:\/\/[^/]+\/[^/]+\/(.*?)\/?$/;
+        const match = input.match(regex);
+        if (match && match[1]) {
+            return match[1];
+        }
+        return input;
+    }
+    console.log(extractPath('https://esale.95505.cn/yxx_customer_sit/api/exam/examList'))
+</script>
+
+</html>

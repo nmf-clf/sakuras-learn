@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- import basic style files mui-player.min.css -->
+  <link rel="stylesheet" type="text/css" href="./css//mui-player.min.css" />
+</head>
+
+<body>
+  <!-- Specify the player container -->
+  <div id="mui-player"></div>
+</body>
+<!-- import basic script mui-player.min.js -->
+<script type="text/javascript" src="./js//mui-player.min.js"></script>
+<script>
+  // 初始化 MuiPlayer 插件，MuiPlayer 方法传递一个对象，该对象包括所有插件的配置
+var mp = new MuiPlayer({
+    container:'#mui-player',
+    title:'Title',
+    src:'https://testesale.95505.cn/yxx_efile_sit/files/train/20230620/20230620093319675.mp4',
+})
+</script>
+</html>

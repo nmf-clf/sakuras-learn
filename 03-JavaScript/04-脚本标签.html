@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body></body>
+<script async src="https://sakuras.group/sakuras-docs/async.js"></script>
+<script src="https://sakuras.group/sakuras-docs/create.js"></script>
+<!-- 
+    不走缓存：create.js 可能加载耗时比 async 更久，因此报错
+    若走缓存：有可能报错，也有可能不报错，虽然两个文件加载耗时都是0ms，但是可能由于 async 执行的更快，因此也会报错
+ -->
+</html>

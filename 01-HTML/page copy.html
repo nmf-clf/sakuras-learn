@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>五子棋</title>
+    <style>
+        .board {
+            width: 400px;
+            height: 400px;
+            background: #333;
+            position: relative;
+        }
+        .cell {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #999;
+            display: inline-block;
+            text-align: center;
+            line-height: 80px;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .black {
+            color: black;
+        }
+        .white {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="board" id="board">
+        <!-- 棋盘格将通过JavaScript动态生成 -->
+    </div>
+
+    <script>
+        const boardSize = 15; // 定义棋盘大小为15x15
+        const board = document.getElementById('board');
+        let currentPlayer = 'black'; // 当前玩家为黑色
+
+        // 生成棋盘
+        function createBoard() {
+            for (let i = 0; i < boardSize; i++) {
+                const row = document.createElement('div');
+                row.className = 'row';
+                for (let j = 0; j < boardSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.addEventListener('click', () => makeMove(i, j));
+                    row.appendChild(cell);
+                }
+                board.appendChild(row);
+            }
+        }
+
+        // 玩家下棋
+        function makeMove(row, col) {
+            const cell = document.querySelector(`.row:nth-child(${row + 1}) .cell:nth-child(${col + 1})`);
+            if (cell.textContent) return; // 如果已有棋子，不允许再次下棋
+
+            cell.classList.add(currentPlayer); // 添加棋子颜色
+            cell.textContent = currentPlayer === 'black' ? '●' : '○'; // 黑子和白子
+
+            // 切换玩家
+            currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+        }
+
+        // 初始化棋盘
+        createBoard();
+    </script>
+</body>
+</html>

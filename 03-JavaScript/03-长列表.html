@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 隐藏loading的字体 */
+        .pull-refresh {
+            overflow: hidden;
+        }
+
+        /* 初始化 */
+        .pull-refresh-info {
+            position: relative;
+            background-color: #cccccc;
+            transform: translateY(0px);
+            transition-duration: 0.25s;
+        }
+
+        /* 浮在上面，把整体上移Y-100% */
+        .loading {
+            position: absolute;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            -webkit-transform: translateY(-100%);
+            transform: translateY(-100%);
+        }
+
+        .loading-info .loading-animation {
+            /* 添加一个不起眼的动画 */
+            /*图片来自于阿里矢量库
+  * @author：十点UI酱
+  */
+            content: url(./loading.png);
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            animation: turnPhoto 0.8s infinite ease-in-out;
+        }
+
+        @keyframes turnPhoto {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(180deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text dot {
+            display: inline-block;
+            height: 1em;
+            line-height: 1;
+            overflow: hidden;
+            margin-left: 5px;
+            text-align: left;
+            /*给一个从左到右的假象*/
+        }
+
+        .loading-text dot::before {
+            content: "...\A..\A.";
+            display: block;
+            white-space: pre-wrap;
+            animation: dotAnimation 1.5s infinite step-start both;
+        }
+
+        @keyframes dotAnimation {
+            33% {
+                transform: translateY(-2em);
+            }
+
+            66% {
+                transform: translateY(-1em);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <p>用于测试遮挡，表现加载文字的处理效果</p>
+    <div class="pull-refresh">
+        <!--这个是下拉刷新的容器 -->
+        <div class="pull-refresh-info">
+            <!--这个是加载展示的效果 -->
+            <div class="loading"></div>
+            <!--下面的是内容 ：w-list是作为下面谈到的上滑加载使用 -->
+            <div class="w-list">
+                <div class="block">
+                    内容
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>// 为了更好的移植性选择js
+    let pullRefreshNode = document.querySelector(".pull-refresh-info");
+    let loadingNode = document.querySelector(".loading");
+    let startY = 0; //初始用户点击的位置
+    let scrollDistance = 0; //用户滑动的距离
+    let loadingStart = false; //加载中的状态，true时就不让用户在下拉了，避免用户没事拉着玩
+    let pullTimerId = null; //pull给定时设置id，结束就清除掉，这是一个好习惯
+    pullRefreshNode.addEventListener("touchstart", touchStartFuc, false)
+    pullRefreshNode.addEventListener("touchmove", touchMoveFuc, false)
+    pullRefreshNode.addEventListener("touchend", touchEndFuc, false)
+
+    function touchStartFuc(e) {
+        // 触摸开始
+        if (!loadingStart) {
+            startY = e.changedTouches[0].clientY;
+            loadingNode.innerText = "下拉刷新";
+            pullRefreshNode.style.transitionDuration = "0s";
+        }
+    }
+
+    function touchMoveFuc(e) {
+        // 持续触摸中
+        let scrollTop = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
+        // scrollTop为零，说明到了顶部，到了顶部就有事做了，不到顶部就不要去做什么，不让乱七八糟的怪事就要发生了（狗头）
+        if (scrollTop == 0 && !loadingStart) {
+            scrollDistance = e.changedTouches[0].clientY - startY;
+            // 距离大于 0px 小于 100px 才会有效果
+            if (scrollDistance < 100 && scrollDistance > 0) {
+                if (scrollDistance > 70) {
+                    //我们在下面加载的信息是距离大于70px,才更新动画,距离大于70px就可以提示了
+                    loadingNode.innerText = "释放即可刷新";
+                }
+                pullRefreshNode.style.transform = `translateY(${scrollDistance}px)`
+            }
+        }
+    }
+
+    function touchEndFuc(e) {
+        // 触摸结束--开始刷新数据--如果使用框架，封装成组件，发射监听函数，父组件捕捉到，去请求接口即可
+        pullRefreshNode.style.transitionDuration = "0.25s"; // 添加返回的动画时间
+        //大于70了，才会启动刷新
+        if (scrollDistance > 70) {
+            loadingStart = true; //不准用户再次加载中下拉
+            loadingNode.innerHTML = `
+          <div class="loading-info">
+              <span class="loading-animation">加载动画</span>
+              <span class="loading-text">加载中<dot>...</dot></span>
+          </div>
+        `;
+            pullRefreshNode.style.transform = `translateY(50px)`; //返回70px,剩下的距离可以展示内容
+            // 什么时候请求接口结束，返回一个boolean的状态，去修改一下的这个初始化就行
+            // 本人写setTimeout的设置，就是为了模仿一下，异步请求
+            pullTimerId = setTimeout(() => {
+                //数据更新时间
+                loadingNode.innerHTML = "";
+                pullRefreshNode.style.transform = `translateY(0px)`;
+                scrollDistance = 0; // 距离清0，恢复初始化
+                loadingStart = false; // 初始化下拉
+                clearTimeout(pullTimerId);//养成好习惯，用完处理掉
+            }, 3000)
+        } else {
+            // 小于70，松开回弹，不刷新
+            pullRefreshNode.style.transform = `translateY(0px)`;
+            loadingNode.innerText = "";
+        }
+    }
+</script>
+<script>
+    // 一般不会到了触底才去请求函数 300px 150px 只有就可以请求数据了
+    let wListNode = document.querySelector(".w-list");
+    let listTimerId = null; //list给定时设置id，结束就清除掉，这是一个好习惯
+    let listLoadingNode = document.querySelector(".w-list .list-loading");
+    // 视口高度
+    let clientHeight = document.body.clientHeight || document.documentElement.clientHeight;
+    //记录上一次的scrollTop
+    let perScrollTopList = 0;
+    window.addEventListener("scroll", scrollListFuc, false);
+    // 文档高度小于视口高度 wListNode.clientHeight
+    scrollListFuc();
+    function scrollListFuc() {
+        // 文档的总高度
+        let scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
+        // 滚动条的高度
+        let scrollTop = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
+        //判断一下 文档高度小于视口高度，或者离触底还有30，并且是下滑操作
+        if (wListNode.clientHeight < clientHeight || scrollHeight - scrollTop - clientHeight <= 30 && perScrollTopList < scrollTop) {
+            //加载中先移除组件
+            window.removeEventListener("scroll", scrollListFuc, false);
+            console.log("触底了准备请求，加入数据");
+            listLoadingNode.style.height = "50px";
+            listLoadingNode.innerHTML = `
+      <div class="loading-info">
+          <span class="loading-animation">加载动画</span>
+          <span class="loading-text">加载中<dot>...</dot></span>
+      </div>
+    `;
+            listTimerId = setTimeout(() => {
+                //数据更新时间，更新数据长度是多少
+                //我自己假设一下，加载几个就不让加载了，大佬们使用框架就直接传递数据是否为空判断就好了，到时候需要自由发挥
+                let dataList = wListNode.children.length > 6 ? [] : ["不为空"];
+                if (dataList.length == 0) {
+                    listLoadingNode.innerText = "没有更多了"
+                    perScrollTopList = Infinity; //防止加载完成继续加载 ，设置最大值，在加载完毕没有数据加载了，上滑在30px区间内部不会触发加载
+                } else {
+                    listLoadingNode.innerHTML = "";
+                    listLoadingNode.style.height = "0px";
+                    // 下面是创建节点 使用在框架里，直接在对象中积累添加数据就行，不需要js怎么麻烦
+                    let newNode = document.createElement("div")
+                    newNode.className = "block";
+                    newNode.innerText = "内容";
+                    wListNode.insertBefore(newNode, listLoadingNode);
+                    window.addEventListener("scroll", scrollListFuc, false); // 放里面，就不需要考虑加载结束，滑动继续加载问题
+                }
+                console.log("加载结束");
+                //window.addEventListener("scroll",scrollListFuc,false); //放外面，重新滑倒底部有会请求一次，但是上滑不会，因为perScrollTopList处理了一下
+                clearTimeout(listTimerId);//好习惯处理一下
+                if (wListNode.clientHeight < clientHeight) {
+                    scrollListFuc();// 文档高度小于视口高度 
+                }
+            }, 1500)
+        }
+        perScrollTopList = scrollTop;
+    }
+
+
+</script>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .main{
+      width: 100px;
+      height: 100px;
+    }
+    .box1,
+    .box2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div class="box1">1</div>
+    <div class="box2">2</div>
+  </div>
+</body>
+<script>
+  var box1 = document.querySelector('.box1');
+  var box2 = document.querySelector('.box2');
+  box1.addEventListener('click', function () {
+    console.log('click');
+  })
+  box2.addEventListener('click', function () {
+    console.log('click2');
+  })
+</script>
+
+</html>

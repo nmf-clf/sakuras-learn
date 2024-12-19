@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Video.js Example</title>
+  <link href="https://vjs.zencdn.net/7.14.3/video-js.css" rel="stylesheet">
+  <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+</head>
+
+<body>
+  <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" data-setup='{"fluid": true}'>
+    <source src="https://testesale.95505.cn/yxx_efile_sit/files/train/20230620/20230620093319675.mp4" type="video/mp4">
+    <!-- <source src="your-video.webm" type="video/webm"> -->
+  </video>
+  <style>
+    /* Hide the progress bar element */
+    .vjs-progress-control {
+      display: none !important;
+    }
+  </style>
+  <script src="https://vjs.zencdn.net/7.14.3/video.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-iosfullscreen@0.2.1/dist/videojs-iosfullscreen.min.js"></script>
+  <script>
+    var player = videojs('my-video');
+    console.log('player-', player.iosFullscreen);
+    player.iosFullscreen({
+      enterOnRotate: true, // 设置为 true 时，iOS设备在旋转到横屏模式时会自动进入全屏模式。默认值为 false。
+      exitOnRotate: true, // 设置为 true 时，iOS设备在旋转回竖屏模式时会自动退出全屏模式。默认值为 false。
+      disableAutoHide: true, // 设置为 true 时，视频播放器的控制器不会自动隐藏。默认值为 false。
+      fullscreenClass: 'vjs-custom-fullscreen', // 在全屏模式下应用于视频播放器的CSS类。默认值为 vjs-fullscreen。
+      hideControls: true // 设置为 true 时，将隐藏视频播放器的所有控制器。默认值为 false。
+    });
+  </script>
+</body>
+
+</html>

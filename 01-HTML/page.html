@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>为div绑定点击事件示例</title>
+    <script>
+        // 当文档加载完成后执行此函数
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // 获取id为"myDiv"的div元素
+            const myDiv = document.getElementById('myDiv');
+
+            // 为div元素添加点击事件监听器
+            myDiv.addEventListener('click', function (event) {
+                // 在控制台打印点击事件的消息
+                console.log('div被点击了!');
+                if ('geolocation' in navigator) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const { latitude, longitude, accuracy } = position.coords;
+                            console.log(latitude, longitude, accuracy);
+                        },
+                        (error) => {
+                            console.error(error);
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 1000,
+                        }
+                    );
+                } else {
+                    console.error('Geolocation is not supported by this browser.');
+                }
+                // 也可以在这里执行其他操作，例如更改div的内容或样式
+                this.textContent = '你点击了我！';
+                this.style.backgroundColor = 'lightblue'; // 改变背景颜色
+                this.style.color = 'black'; // 改变文字颜色
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <!-- 创建一个div元素，并设置id为"myDiv" -->
+    <div id="myDiv"
+        style="width: 100px; height: 100px; line-height: 100px; text-align: center; background-color: lightgray; color: white;">
+        点击我
+    </div>
+</body>
+<script type="text/javascript"
+    src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=4XesIX6TSwJxklJMDgvix1nTKnRo4hS9"></script>
+<script>// 创建几个异步操作的 Promise 对象
+    // const promise1 = Promise.resolve(3);
+    const promise1 = new Promise((res, rej) => {
+        res();
+        return '123'
+    });
+    // const promise2 = new Promise((resolve, reject) => setTimeout(resolve, 100, 'hello'));
+    // const promise3 = new Promise((resolve, reject) => setTimeout(reject, 200, new Error('reject')));
+
+    // 使用 Promise.all()
+    let [a] = Promise.all([promise1])
+    // .then(values => {
+    //     console.log('All promises settled with values:', values);
+    // })
+    // .catch(error => {
+    //     console.error('One of the promises was rejected:', error);
+    // });
+    console.log('xxxxxxx', a, b);
+    // // 使用 Promise.allSettled()
+    // Promise.allSettled([promise1, promise2, promise3])
+    //     .then(results => {
+    //         console.log('All promises have settled:', results);
+    //         results.forEach((result, index) => {
+    //             if (result.status === 'fulfilled') {
+    //                 console.log(`Promise ${index + 1} was fulfilled with value: ${result.value}`);
+    //             } else {
+    //                 console.error(`Promise ${index + 1} was rejected with reason: ${result.reason}`);
+    //             }
+    //         });
+    //     });</script>
+
+</html>

@@ -28,19 +28,23 @@ class Compiler {
         let rules = this.config?.module.rules || []; // 1. 获取所有的规则
         let content = fs.readFileSync(modulePath, "utf8"); // 2. 读取模块内容
         // console.log('content>>', content);
-        for(let i=0; i<rules.length; i++){ // 3. 遍历所有的规则
+        for (let i = 0; i < rules.length; i++) {
+            // 3. 遍历所有的规则
             let rule = rules[i];
-            let {test, use} = rule;
+            let { test, use } = rule;
             let len = use.length - 1; // 从后往前执行
-            if(test.test(modulePath)){ // 需要转换
-                function normalLoader() { // 递归调用
+            if (test.test(modulePath)) {
+                // 需要转换
+                function normalLoader() {
+                    // 递归调用
                     let _l = use[len--];
-                    console.log('处理loader>>>', _l);
+                    console.log("处理loader>>>", _l);
                     let loader = require(_l); // 获取 loader
                     // let loader = _l;
                     content = loader(content); // 执行 loader
-                    console.log('loader转换结果>>>', content);
-                    if(len >= 0){ // 还有 loader
+                    console.log("loader转换结果>>>", content);
+                    if (len >= 0) {
+                        // 还有 loader
                         normalLoader(); // 递归调用
                     }
                 }
@@ -54,10 +58,10 @@ class Compiler {
         // console.log("父级节点>>>", parentPath);
         // 1. 将源码转换成 AST
         let ast;
-        try{
+        try {
             ast = babylon.parse(source);
-        }catch(err){
-            console.log('出错啦:::', err);
+        } catch (err) {
+            console.log("出错啦:::", err);
         }
         // 2. 遍历 AST
         let dependencies = []; // 依赖列表
@@ -98,10 +102,7 @@ class Compiler {
             this.entryId = moduleName; // 保存入口的名字
         }
         // 3. 解析需要把 source 源码进行改造，返回一个依赖列表 - dependencies: 依赖列表通常是相对路径
-        let { sourceCode, dependencies } = this.parse(
-            source,
-            path.dirname(moduleName)
-        );
+        let { sourceCode, dependencies } = this.parse(source, path.dirname(moduleName));
         // 4. 把相对路径和模块中的内容对应起来
         this.modules[moduleName] = sourceCode;
         // 5. 递归加载依赖模块

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        #c {
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <!-- 创建 canvas 画布 -->
+    <canvas id="c" width="200" height="200"></canvas>
+
+    <!-- 引入 fabric.js -->
+    <script src="https://cdn.jsdelivr.net/npm/fabric"></script>
+
+    <script>
+        setTimeout(() => {
+            const canvas = new fabric.Canvas('c')
+
+            // 创建矩形元素
+            const rect = new fabric.Rect({
+                top: 50,
+                left: 50,
+                width: 60,
+                height: 60,
+                fill: '#aa96da'
+            })
+            alert(rect);
+            console.log('xxxx', rect);
+            // 将矩形添加到画布中
+            canvas.add(rect)
+        }, 2000);
+
+    </script>
+</body>
+
+</html>

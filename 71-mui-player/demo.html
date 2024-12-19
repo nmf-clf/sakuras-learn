@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- import basic style files mui-player.min.css -->
+  <link rel="stylesheet" type="text/css" href="./css//mui-player.min.css" />
+</head>
+
+<body>
+  <!-- Specify the player container -->
+  <div id="mui-player"></div>
+</body>
+<!-- import basic script mui-player.min.js -->
+<script type="text/javascript" src="./js//mui-player.min.js"></script>
+<script>
+  // 初始化 MuiPlayer 插件，MuiPlayer 方法传递一个对象，该对象包括所有插件的配置
+  var mp = new MuiPlayer({
+    container: '#mui-player',
+    title: 'Title',
+    src: 'https://testesale.95505.cn/yxx_efile_sit/files/train/20230620/20230620093319675.mp4',
+    poster: 'https://testesale.95505.cn/yxx_efile_sit/files/train/20230625/20230625150018461.jpg',
+    // preload: 'none', // 预加载行为，可选值为 none, metadata, auto
+    videoAttribute: [
+      { attrKey: 'webkit-playsinline', attrValue: 'webkit-playsinline' },
+      { attrKey: 'playsinline', attrValue: 'playsinline' },
+      { attrKey: 'x5-video-player-type', attrValue: 'h5-page' },
+    ],
+    // live: true, // 直播模式
+    // loop: true, // 循环播放
+    // initFullFixed: true
+    // themeColor: '#000000',
+    showMiniProgress: false, // 是否显示迷你进度条
+    // pageHead: false, // 是否显示页面头部
+    defaultMenuConfig: {
+      showSpeedSwitch: true, // 是否显示倍速切换
+    }
+  })
+  // 返回按钮点击时触发
+  mp.on('back', function (event) {
+    console.log('back');
+  });
+  // 监听播放器已创建完成
+  mp.on('ready', function (event) {
+    console.log('视频创建完成...', mp);
+  });
+  // 当用户在视频寻址时触发
+  mp.on('seek-progress', function (percentage) {
+    console.log('视频寻址...', percentage);
+    throw new Error('寻址失败...');
+    // mp.showToast('提示...');
+    // alert(1)
+  })
+  // 当视频进入或者退出全屏时触发
+  mp.on('fullscreen-change', function (direction, fullscreen) {
+    console.log('全屏状态改变...', direction, fullscreen);
+    // alert(1)
+  })
+  // controls 控件状态显示或隐藏时触发
+  mp.on('controls-toggle', function (show) {
+    console.log('控制栏状态变化了...', show);
+  });
+</script>
+
+</html>

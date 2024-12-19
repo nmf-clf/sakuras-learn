@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: #000000
+        }
+
+        canvas {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            margin-left: -50vmin;
+            width: 100vmin;
+            height: 100vmin;
+            overflow: hidden;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+</body>
+<script>
+    var canvas, ctx, pt, count, wlen, gtx, gty, pq;
+    canvas = document.getElementsByTagName('canvas')[0];
+    ctx = canvas.getContext('2d');
+    canvas.width = canvas.height = 400;
+    aaa();
+
+    function aaa() {
+        var a, b, c, d, e, x, y, z, r, tim, max, bai, ys, yc, xs, xc, p, x1, y1, z1;
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = "rgb(222,222,222)";
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = "lighter";
+
+        tim = new Date().getTime() / 70;
+        gtx = canvas.width / 2;
+        gty = canvas.height / 2;
+        ctx.lineWidth = 2;
+        wlen = 1.5 + Math.sin(tim / 31);
+        r = -tim / 37;
+        x = Math.cos(r * 3);
+        y = Math.sin(r * 5);
+        z = Math.sin(-r * 2);
+        qp = [x, y, z];
+        max = 70;
+        pt = [];
+
+        bai = 0.6 + Math.sin(tim / 29) * 0.4;
+        r = tim / 37;
+        for (a = 0; a < max; a++) {
+            x = Math.cos(r * 3);
+            y = Math.sin(r * 5);
+            z = Math.sin(-r * 2);
+            cube(x, y, z, r * 7, -r * 5);
+            r += Math.PI * 2 / max * bai;
+        }
+
+        a = -tim / 43;
+        ys = Math.sin(a);
+        yc = Math.cos(a);
+        a = tim / 47;
+        xs = Math.sin(a);
+        xc = Math.cos(a);
+
+        c = 100;
+        e = Math.sin(tim / 61) * 2;
+        for (d = 0; d < pt.length; d++) {
+            p = pt[d];
+            for (a = 0; a < p.length; a++) {
+                b = p[a];
+                x = b[0]; y = b[1]; z = b[2];
+                y1 = yc * y - ys * z;
+                z1 = ys * y + yc * z;
+                x1 = xc * x - xs * z1;
+                z1 = xs * x + xc * z1;
+                z = Math.pow(1.4, z1 / 1 + e);
+                b[0] = x1 * c * z + gtx;
+                b[1] = y1 * c * z + gty;
+                b[2] = z;
+            }
+        }
+
+        for (d = 0; d < pt.length; d++) {
+            p = pt[d];
+            ctx.strokeStyle = "hsla(244,60%,60%,0.6)";
+            for (e = 0; e < 2; e++) {
+                for (b = 0; b < 2; b++) {
+                    c = b * 4;
+                    ctx.beginPath();
+                    for (a = 0; a < 4; a++)ctx.lineTo(p[a + c + e * 8][0], p[a + c + e * 8][1]);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+
+                for (a = 0; a < 4; a++) {
+                    ctx.beginPath();
+                    ctx.lineTo(p[a + e * 8][0], p[a + e * 8][1]);
+                    ctx.lineTo(p[a + 4 + e * 8][0], p[a + 4 + e * 8][1]);
+                    ctx.stroke();
+                }
+            }
+
+            ctx.strokeStyle = "hsla(344,60%,60%,0.3)";
+            for (a = 0; a < 8; a++) {
+                ctx.beginPath();
+                ctx.lineTo(p[a][0], p[a][1]);
+                ctx.lineTo(p[a + 8][0], p[a + 8][1]);
+                ctx.stroke();
+            }
+        }
+        requestAnimationFrame(aaa);
+    }
+
+    function cube(tx, ty, tz, xr, yr) {
+        var a, b, c, p, xc, xs, yc, ys, x, y, z, x1, y1, z1, x2, y2, z2, x3, y3, z3;
+        p = [
+            [-1, -1, -1], [-1, 1, -1], [1, 1, -1], [1, -1, -1],
+            [-1, -1, 1], [-1, 1, 1], [1, 1, 1], [1, -1, 1],
+        ];
+        xc = Math.cos(xr);
+        xs = Math.sin(xr);
+        yc = Math.cos(yr);
+        ys = Math.sin(yr);
+
+        c = 0.1;
+        for (a = 0; a < 8; a++) {
+            b = p[a];
+            x = b[0]; y = b[1]; z = b[2];
+            y1 = yc * y - ys * z;
+            z1 = ys * y + yc * z;
+            x1 = xc * x - xs * z1;
+            z1 = xs * x + xc * z1;
+            x2 = x1 * c + tx;
+            y2 = y1 * c + ty;
+            z2 = z1 * c + tz;
+            b[0] = x2;
+            b[1] = y2;
+            b[2] = z2;
+            px = x2 - qp[0];
+            py = y2 - qp[1];
+            pz = z2 - qp[2];
+            e = Math.pow(px * px + py * py + pz * pz, 0.5);
+            e = wlen / e;
+            x3 = qp[0] + px * e;
+            y3 = qp[1] + py * e;
+            z3 = qp[2] + pz * e;
+            p.push([x3, y3, z3]);
+        }
+        pt.push(p);
+    }
+</script>
+
+</html>

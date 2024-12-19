@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/xgplayer@3.0.19/dist/index.min.css" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="yxx-xg-player" className="xgplayer"></div>
+</body>
+<!-- <script type="text/css" src="https://unpkg.com/xgplayer@3.0.19/dist/index.min.css"></script> -->
+<script src="https://unpkg.com/xgplayer@3.0.19/dist/index.min.js"></script>
+<script src="https://unpkg.com/xgplayer-flv@3.0.19/dist/index.min.js"></script>
+
+<script>
+    console.log(window.FlvPlayer.isSupported());
+    new Player({
+        id: 'yxx-xg-player',
+        // isLive: true,
+        // plugins: [FlvPlugin],
+        plugins: [window.FlvPlayer],
+        url: 'https://sakuras.group/sakuras-docs/test.flv',
+        // url: "https://esale-study.95505.cn/study/xguan/20240620/20240620155337404.mp4"
+        flv: {
+            retryCount: 3, // 重试 3 次，默认值
+            retryDelay: 1000, // 每次重试间隔 1 秒，默认值
+            loadTimeout: 10000, // 请求超时时间为 10 秒，默认值
+            fetchOptions: {
+                // 该参数会透传给 fetch，默认值为 undefined
+                mode: 'cors'
+            }
+        }
+    })
+</script>
+
+</html>

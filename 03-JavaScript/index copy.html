@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave Animation</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+
+  .wave-container {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    background-color: #b3e0ff; /* 浅蓝色背景 */
+    overflow: hidden;
+  }
+
+  .wave-container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,30 C50,0 50,70 100,30 Z" fill="#b3e0ff" /></svg>');
+    background-repeat: repeat-x;
+    background-size: 100% 100px;
+    animation: wave-animation 5s linear infinite;
+  }
+
+  @keyframes wave-animation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="wave-container"></div>
+</body>
+</html>

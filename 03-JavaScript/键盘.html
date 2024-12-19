@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>数字键盘示例</title>
+<style>
+  .keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 20px;
+  }
+  .key {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <input type="text" id="input" placeholder="输入数字或数字字母">
+  <div class="keyboard">
+    <div class="key" data-value="1">1</div>
+    <div class="key" data-value="2">2</div>
+    <div class="key" data-value="3">3</div>
+    <!-- 其他按键 -->
+  </div>
+
+  <script>
+    const input = document.getElementById('input');
+    const keys = document.querySelectorAll('.key');
+
+    keys.forEach(key => {
+      key.addEventListener('click', function() {
+        const value = this.getAttribute('data-value');
+        if (/^\d+$/.test(value)) { // 只允许数字
+          input.value += value;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

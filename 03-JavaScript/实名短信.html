@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .auth {
+            width: 85%;
+            margin: 5vh auto;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .auth p {
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .auth .auth-verify {
+            margin: 10vh auto;
+            height: 40px;
+            line-height: 40px;
+            font-size: 0;
+        }
+
+        .auth-verify-left {
+            float: left;
+            width: 60%;
+            height: 100%;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-right: none;
+        }
+
+        .auth-verify-right {
+            float: left;
+            width: 40%;
+            height: 100%;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            font-size: 13px;
+            background: #fff;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .auth-verify-right:active {
+            /* background: #ccc; */
+        }
+
+        .auth .auth-verify .auth-verify-input {
+            width: 80%;
+            height: 40px;
+            border-radius: 5px;
+            padding: 0 10px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border: none;
+            background: transparent;
+            text-align: center;
+        }
+
+        .auth .auth-verify .auth-verify-input:focus {
+            outline: none;
+        }
+
+        .auth .auth-confirm {
+            margin-top: 15vh;
+            font-size: 16px;
+            letter-spacing: 1px;
+            background: #15944a;
+            background-image: linear-gradient(180deg, #15944a, #11763b) !important;
+            height: 40px;
+            line-height: 40px;
+            color: #fff;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth">
+        <p>实名短信</p>
+        <div class="auth-verify">
+            <div class="auth-verify-left">
+                <input class="auth-verify-input" id="auth-verify" type="number" placeholder="请输入验证码" maxlength="4"
+                    oninput="validateCode(this)"></input>
+            </div>
+            <div class="auth-verify-right" id="auth-verify-btn">
+                发送验证码
+            </div>
+        </div>
+        <div class="auth-confirm">确认</div>
+    </div>
+</body>
+<script>
+    // 获取按钮元素
+    var verifyBtn = document.getElementById('auth-verify-btn');
+    // 设置倒计时时间
+    var countdown = 60;
+
+    // 定义倒计时函数
+    function countdownTimer() {
+        if (countdown === 0) {
+            // 当倒计时结束时，重置按钮文本和倒计时
+            verifyBtn.textContent = '发送验证码';
+            verifyBtn.style.color = '#000';
+            verifyBtn.disabled = false;
+            countdown = 60;
+            return;
+        }
+        // 更新按钮文本
+        verifyBtn.textContent = `${countdown}秒后重新发送`;
+        verifyBtn.style.color = '#ccc';
+        // 禁用按钮，防止重复点击
+        verifyBtn.disabled = true;
+        // 减少倒计时
+        countdown--;
+        // 每秒调用一次倒计时函数
+        setTimeout(countdownTimer, 1000);
+    }
+
+    // 为按钮添加点击事件监听器
+    verifyBtn.addEventListener('click', function () {
+        // 调用倒计时函数
+        if (!verifyBtn.disabled) {
+            countdownTimer();
+        }
+    });
+
+    function validateCode(input) {
+        // 允许输入的字符：0-9的数字
+        var regex = /^[0-9]{0,4}$/;
+        // 如果输入的值不匹配正则表达式，则将输入的值设置为空
+        if (!regex.test(input.value)) {
+            input.value = input.value.slice(0, 4);
+        }
+        // 确保输入值不超过4位数字
+        if (input.value.length > 4) {
+            input.value = input.value.slice(0, 4);
+        }
+    }
+</script>
+
+</html>
